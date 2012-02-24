@@ -1,0 +1,9 @@
+SlipStream
+==========
+
+A website written in Django aimed at helping users make the most of, and
+consolidate their subscriptions. It is first aimed at video streaming services
+like Netflix, Amazon Prime, and Hulu.
+
+Users can add a list of their favorite shows, and receive notifications when
+they are added to their paid subscriptions.
