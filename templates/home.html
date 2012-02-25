@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="hero-unit">
+        <h2>My Shows</h2>
+        <ul>
+        {% for show in userprofile.shows.all %}
+            <li> {{ show.name }} </li>
+        {% endfor %}
+        </ul>
+        <p><a class="btn primary small" href="/about/">+ Add</a></p>
+    </div>
+{% endblock %}

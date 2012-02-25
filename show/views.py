@@ -10,10 +10,9 @@ from show.models import Show
 def home(request):
     user_profile = request.user.get_profile()
     form=AddShowForm()
-    show_list = user_profile.shows
-    return render_to_response('base.html', {'user': request.user,
+    return render_to_response('home.html', {'user': request.user,
+                                            'userprofile': user_profile,
                                             'form': form,
-                                            'shows': show_list
     }, context_instance=RequestContext(request))
 
 @login_required
