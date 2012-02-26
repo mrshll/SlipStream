@@ -20,21 +20,21 @@
                     <li><a href="/">Home</a></li>
                 </ul>
                 <ul class="nav secondary-nav">
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
+                    {% else %}
                     <li class="dropdown" data-dropdown="dropdown">
                         <a href="#" class="dropdown-toggle">{{user.username}}</a>
                         <ul class="dropdown-menu">
-                            {% if user.is_authenticated %}
                                 <li><a href="{% url userprofile.views.me %}">View Profile</a></li>
                                 <li><a href="{% url django.contrib.auth.views.logout %}">Logout</a></li>
                                 {% if user.is_staff %}
                                     <li class="divider"></li>
                                     <li><a href="/admin/">Admin</a></li>
                                 {%endif %}
-                            {% else %}
-                                <li><a href="{% url django.contrib.auth.views.login %}">Login</a></li>
-                            {% endif %}
                         </ul>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
