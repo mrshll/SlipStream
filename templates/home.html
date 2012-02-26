@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#add_show_button').click(function() {
+            url = "{%url show.views.add %}";
+            callback = add_show_callback;
+        $.post(url,{
+            "show_name":$('#id_show_name').val(),
+            "csrfmiddlewaretoken":"{{csrf_token}}"
+        },callback);
+        });
+    });
+
+    function add_show_callback(response){
+        $('#shows ul').append("<li>"+response+"</li>");
+    }
+
+    $(document).ajaxStart(function() {
+        $('#spinner').show();
+    }).ajaxStop(function() {
+        $('#spinner').hide();
+    });
+</script>
+
+    <div class="hero-unit">
+        <h2>My Shows</h2>
+        <div id="shows">
+            <ul>
+                {% for show in userprofile.shows.all %}
+                <li> {{ show.name }} </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {{ form }}
+        <p><a id="add_show_button" class="btn primary small" >+ Add</a></p>
+    </div>
+{% endblock %}

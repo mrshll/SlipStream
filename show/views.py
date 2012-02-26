@@ -10,29 +10,38 @@ from show.models import Show
 def home(request):
     user_profile = request.user.get_profile()
     form=AddShowForm()
-    show_list = user_profile.shows
-    return render_to_response('base.html', {'user': request.user,
+    return render_to_response('home.html', {'user': request.user,
+                                            'userprofile': user_profile,
                                             'form': form,
-                                            'shows': show_list
     }, context_instance=RequestContext(request))
 
+@logi_required
+def add(request):
+    if request.POST and request.POST.get('show_name'):
+        new_show = Show(name=request.POST.get('show_name'))
+        new_show.save()
+        request.user.get_profile().show.add(new_show)
+        xhtml = render_bbcode(request.POST.get('text'))
+
+'''
 @login_required
 def add(request):
-    result = {'bad':'false'}
-    user_profile = request.user.get_profile()
-    if request.method == 'POST':
-        form=AddShowForm(request.POST)
-        if not form.is_valid():
-            result.update({'bad':'true'})
-            d={}
-            for e in form.errors.iteritems():
-                d.update({e[0]:unicode(e[1])})
-            result.update({'errs': d })
-        s = Show(name=form.cleaned_data['show_name'])
-        s.save()
-        user_profile.shows.add(s)
-
-    json = simplejson.dumps(result, ensure_ascii=False)
-    return HttpResponse( json, mimetype='application/javascript' )
-
-
+    if not request.POST:
+        return render_to_response('index.html', {})
+    xhr = request.GET.has_key('xhr')
+    response_dict = {}
+    show_name = request.POST.get('show_name', False)
+    total = request.POST.get('total', False)
+    response_dict.update({'name': show_name, 'total': total})
+    if request.show_name:
+        response_dict.update({'success': True})
+        print(request,response_dict)
+        #s = Show(name=form.cleaned_data['show_name'])
+        #s.save()
+    else:
+        response_dict.update({'errors': {}})
+        if not show_name:
+            response_dict['errors'].update({'show_name': 'This field is required'})
+    if xhr:
+        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+    return render_to_response('index.html', response_dict)
