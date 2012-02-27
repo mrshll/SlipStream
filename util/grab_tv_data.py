@@ -66,5 +66,5 @@ for show in show_list:
     except:
         print(str(show)+ " FAILED")
 
-print(show_info)
+print(show_info_list)
 
