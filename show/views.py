@@ -13,15 +13,22 @@ def home(request):
                                             'userprofile': user_profile,
     }, context_instance=RequestContext(request))
 
-#def get(request, id):
-#    show = Show.objects.
+def get(request, show_id):
+    try:
+        show = Show.objects.get(id=show_id)
+        return render_to_response('show/get.html', {'user': request.user,
+                                               'show': show},
+        context_instance=RequestContext(request))
+    except:
+        return render_to_response('show/error.html', {'user':request.user},
+                    context_instance=RequestContext(request))
 
 @login_required
 def add(request):
     if request.POST and request.POST.get('show_name'):
         new_show = Show.objects.get(name=request.POST.get('show_name'))
         request.user.get_profile().shows.add(new_show)
-        return HttpResponse(new_show.name)
+        return HttpResponse('<li><a href="/show/'+str(new_show.id)+'">' + new_show.name + '</a></li>')
     return HttpResponse("")
 
 @login_required

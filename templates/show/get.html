@@ -34,7 +34,7 @@
     });
 
     function add_show_callback(response){
-        $('#shows ul').append(response);
+        $('#shows ul').append("<li>"+response+"</li>");
     }
 
     $(document).ajaxStart(function() {
@@ -46,25 +46,10 @@
 </script>
 
     <div class="hero-unit">
-        <div class="row">
-            <div class="span6" id="shows">
-                <h2>Your Shows</h2>
-                <ul>
-                    {% for show in userprofile.shows.all %}
-                    <li> <a href="/show/{{ show.id }}">{{ show.name }} </a> </li>
-                    {% endfor %}
-                </ul>
-                {% include "show_lookup.html" %}
-                <a id="add_show_button" class="btn primary small" >+ Add</a>
-            </div>
-            <div class="span6" id="subscriptions">
-                <h2>Your Subscriptions</h2>
-                <ul>
+        <h2>{{ show.name }}</h2>
+        <a id="add_show_button" class="btn primary small" >+ Add</a>
+        <div id="show">
 
-                </ul>
-                {% include "sub_lookup.html" %}
-                <a id="add_sub_button" class="btn primary small" >+ Add</a>
-            </div>
         </div>
     </div>
 {% endblock %}
