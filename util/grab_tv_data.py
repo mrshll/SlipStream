@@ -1,6 +1,7 @@
-__author__ = 'mmoutenot'
 import urllib2
 from xml.dom.minidom import parse, parseString
+import time
+from show.models import *
 
 
 
@@ -52,19 +53,26 @@ zip_mirror = zip_mirrors[0]
 response_previous_time = urllib2.urlopen('http://www.thetvdb.com/api/Updates.php?type=none')
 previous_time = response_previous_time.read()
 
-show_list_file = open('tv_names.txt')
+show_list_file = open('util/tv_names.txt')
 
 show_list = []
 for line in show_list_file:
     show_list.append(line.rstrip())
 
 show_info_list = []
-for show in show_list:
+for show_name in show_list:
+    new_show = Show(name=str(show_name))
+    new_show.save()
     try:
-        show_info = urllib2.urlopen('http://www.thetvdb.com/api/GetSeries.php?seriesname=' + str(show))
-        show_info_list.append(show_info.read())
-    except:
-        print(str(show)+ " FAILED")
+        show_info = urllib2.urlopen('http://www.thetvdb.com/api/GetSeries.php?seriesname=' + str(show_name).replace(" ", "%20"))
+        show_xml  = show_info.read()
+        show_dom = parseString(show_xml)
+        first_series = show_dom.getElementsByTagName("Series")[0]
+        print(getText(first_series.getElementsByTagName("seriesid")[0].childNodes))
+        new_show.api_id = getText(first_series.getElementsByTagName("seriesid")[0].childNodes)
+        new_show.save()
+    except Exception,e:
+        print(str(e), 'http://www.thetvdb.com/api/GetSeries.php?seriesname=' + str(show_name).replace(" ","%20"))
+    print("added " + str(new_show.name) + " [" +str(new_show.api_id) + "]")
 
-print(show_info_list)
 
