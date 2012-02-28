@@ -5,10 +5,31 @@
         $('#add_show_button').click(function() {
             url = "{%url show.views.add %}";
             callback = add_show_callback;
-        $.post(url,{
-            "show_name":$('#id_show_name').val(),
-            "csrfmiddlewaretoken":"{{csrf_token}}"
-        },callback);
+            $.post(url,{
+                "show_name":$('#showSearchField').val(),
+                "csrfmiddlewaretoken":"{{csrf_token}}"
+            },callback);
+            $('#showSearchField').val("")
+        });
+
+        $(function()
+        {
+            var  testTextBox = $('#showSearchField');
+            var code = null;
+            testTextBox.keypress(function(e)
+            {
+                code= (e.keyCode ? e.keyCode : e.which);
+                if (code == 13){
+                    url = "{%url show.views.add %}";
+                    callback = add_show_callback;
+                    $.post(url,{
+                        "show_name":$('#showSearchField').val(),
+                        "csrfmiddlewaretoken":"{{csrf_token}}"
+                    },callback);
+                    $('#showSearchField').val("")
+                }
+            });
+
         });
     });
 
@@ -21,6 +42,7 @@
     }).ajaxStop(function() {
         $('#spinner').hide();
     });
+
 </script>
 
     <div class="hero-unit">
@@ -32,7 +54,7 @@
                 {% endfor %}
             </ul>
         </div>
-        {{ form }}
-        <p><a id="add_show_button" class="btn primary small" >+ Add</a></p>
+        {% include "lookup.html" %}
+        <a id="add_show_button" class="btn primary small" >+ Add</a>
     </div>
 {% endblock %}

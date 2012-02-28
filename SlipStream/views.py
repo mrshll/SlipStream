@@ -9,3 +9,4 @@ def index(request):
         return HttpResponseRedirect('/home/')
     else:
         return render_to_response('index.html',c)
+

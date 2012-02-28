@@ -2,12 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{% block title %}SlipStream{% endblock %}</title>
-<link rel="stylesheet" href="{% static "styles/main.css" %}" />
-<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}">
-<script src="{% static "scripts/jquery-1.7.1.min.js" %}"></script>
-<script src="{% static "scripts/bootstrap-dropdown.js" %}"></script>
-<script src="{% static "scripts/bootstrap-modal.js" %}"></script>
+    <title>{% block title %}SlipStream{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "styles/main.css" %}" />
+    <link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "styles/autocomplete.css" %}">
+    {% block extra_css %}{% endblock extra_css %}
+
+    <script src="{% static "scripts/jquery-1.7.1.min.js" %}"></script>
+    <script src="{% static "scripts/bootstrap-dropdown.js" %}"></script>
+    <script src="{% static "scripts/bootstrap-modal.js" %}"></script>
+    <script src="{% static "scripts/autocomplete.js" %}">></script>
 </head>
 
 <body>
